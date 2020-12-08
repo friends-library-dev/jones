@@ -2,7 +2,7 @@ import { SavedState } from '../type';
 
 export default function migrate(state: Partial<SavedState>): Partial<SavedState> {
   const { tasks, version } = state;
-  if (version > 1) {
+  if (typeof version == `number` && version > 1) {
     return state;
   }
 

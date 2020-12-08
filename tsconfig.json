@@ -4,7 +4,7 @@
     "module": "ESNext",
     "moduleResolution": "node",
     "lib": ["ES2017", "dom"],
-    "strict": false,
+    "strict": true,
     "noEmit": true,
     "allowJs": true,
     "skipLibCheck": true,

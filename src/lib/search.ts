@@ -1,5 +1,5 @@
 import escape from 'escape-string-regexp';
-import { File, SearchResult } from '../type';
+import { File, SearchResult, SearchResultContext } from '../type';
 
 export function searchFiles(
   searchTerm: string,
@@ -64,7 +64,7 @@ function getContext(
   result: Omit<SearchResult, 'context'>,
   lines: string[],
 ): { lineNumber: number; content: string }[] {
-  const context = [];
+  const context: SearchResultContext[] = [];
   const { start, end } = result;
 
   const beforeLineIndex = start.line - 2;
