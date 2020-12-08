@@ -151,14 +151,14 @@ class EditTask extends React.Component<Props, State> {
         ) : (
           <FriendList>
             {friends
-              .sort((a, b) => (a.name < b.name ? -1 : 1))
+              .sort((a, b) => (a.name.trim() < b.name.trim() ? -1 : 1))
               .map((friend) => (
                 <li
                   key={friend.repoId}
                   className={repoId === friend.repoId ? `selected` : ``}
                   onClick={() => this.setState({ repoId: friend.repoId })}
                 >
-                  {friend.name}
+                  {friend.name.trim()}
                 </li>
               ))}
           </FriendList>
