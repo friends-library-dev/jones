@@ -9,7 +9,7 @@
   "scripts": {
     "start": "parcel --port 8888 ./src/index.html",
     "compile": "true",
-    "build": "parcel build ./src/index.html",
+    "build": "parcel build ./src/index.html --no-source-maps",
     "prestart": "npm run write:css",
     "prebuild": "npm run write:css",
     "write:css": "node ./src/write-css.js",
