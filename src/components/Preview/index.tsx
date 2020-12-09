@@ -66,27 +66,16 @@ type Props = OwnProps & {
 
 interface State {
   html: Html;
-  cssLoaded: boolean;
 }
 
 class Component extends React.Component<Props, State> {
-  public state: State = { html: ``, cssLoaded: false };
+  public state: State = { html: `` };
 
   public componentDidMount(): void {
-    const link = document.createElement(`link`);
-    link.setAttribute(`rel`, `stylesheet`);
-    link.type = `text/css`;
-    link.href = `preview.css`;
-    document.head.appendChild(link);
     window.addEventListener(`scroll`, this.watchScroll);
 
-    link.onload = () => {
-      this.setState({ cssLoaded: true });
-      this.restoreScroll();
-    };
-
     // prepping HTML for a big file can take 1-5 SECONDS
-    // so defer so that we can show the throbber while waiting
+    // so DEFER so that we can show the throbber while waiting
     const { getHtml } = this.props;
     setTimeout(() => {
       this.setState({ html: getHtml() });
@@ -115,12 +104,12 @@ class Component extends React.Component<Props, State> {
   }, 200);
 
   public render(): JSX.Element {
-    const { html, cssLoaded } = this.state;
+    const { html } = this.state;
     return (
       <Rendered className="body">
         <Global styles={globalStyles} />
         <div className="page">
-          {cssLoaded && html ? (
+          {html ? (
             <div className="inner" dangerouslySetInnerHTML={{ __html: html }} />
           ) : (
             <Centered>
