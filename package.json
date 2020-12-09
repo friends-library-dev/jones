@@ -52,7 +52,7 @@
     "@babel/core": "7.3.3",
     "@babel/plugin-transform-react-jsx": "^7.3.0",
     "@babel/preset-typescript": "^7.3.3",
-    "@friends-library/dev": "^4.1.13",
+    "@friends-library/dev": "^4.1.14",
     "@types/classnames": "^2.2.7",
     "@types/escape-string-regexp": "^1.0.0",
     "@types/js-base64": "^2.3.1",
