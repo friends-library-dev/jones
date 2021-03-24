@@ -25,7 +25,6 @@ export function deleteTask(id: Uuid): ReduxThunk {
     }
 
     try {
-      // @ts-ignore
       gh.deleteBranch(github.user, repo.slug, `task-${id}`);
     } catch {
       // ¯\_(ツ)_/¯
@@ -69,7 +68,6 @@ export function submitTask(task: Task): ReduxThunk {
     dispatch({ type: `SUBMITTING_TASK` });
     const pr = await tryGithub(
       async () => {
-        // @ts-ignore
         return await gh.createNewPullRequest(fixedTask, github.user);
       },
       `SUBMIT_TASK`,

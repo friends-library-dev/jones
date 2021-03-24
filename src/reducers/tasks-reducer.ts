@@ -198,7 +198,6 @@ export default createReducer(
       const task = state[payload.id];
       if (task) {
         Object.keys(payload.data).forEach((key) => {
-          // @ts-ignore
           task[key] = payload.data[key];
         });
         task.updated = new Date().toJSON();

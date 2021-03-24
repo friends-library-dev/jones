@@ -4,11 +4,10 @@ import { connect } from 'react-redux';
 import styled from '@emotion/styled';
 import { Global, css } from '@emotion/core';
 import { Uuid, Html } from '@friends-library/types';
+import { ParserError } from '@friends-library/evaluator';
 import { State as AppState } from '../../type';
 import chapterHtml from '../../lib/chapter-html';
 import Centered from '../Centered';
-
-// @ts-ignore
 import throbber from '../../assets/throbber.gif';
 
 const Rendered = styled.div`
@@ -36,7 +35,7 @@ const globalStyles = css`
     counter-reset: footnotes;
   }
 
-  h2 {
+  .chapter {
     margin-top: 0 !important;
     padding-top: 1.125in !important;
   }
@@ -52,6 +51,23 @@ const globalStyles = css`
     font-size: 0.85rem;
     display: inline-block;
     transform: translateY(-7px);
+  }
+
+  span.footnote > * {
+    display: none !important;
+  }
+
+  pre.error {
+    font-size: 14px;
+    color: #ff7e7e;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    margin: 0;
+    padding: 2em;
   }
 `;
 
@@ -126,17 +142,14 @@ class Component extends React.Component<Props, State> {
 
 const mapState = (state: AppState, { taskId, file }: OwnProps): Props => {
   const getHtml = (): Html => {
-    const [html, conversionLogs] = chapterHtml(state, taskId, file);
-    conversionLogs.forEach((log) => {
-      console.warn(
-        `${log.getSeverity()}: ${log.getText()}${
-          log.getSourceLocation()
-            ? ` (near line ${(log.getSourceLocation() as any).getLineNumber()})`
-            : ``
-        }`,
-      );
-    });
-    return html;
+    try {
+      return chapterHtml(state, taskId, file);
+    } catch (err) {
+      if (err instanceof ParserError) {
+        return `<pre class="error parse-error">${err.codeFrame}</pre>`;
+      }
+      return `<pre class="error">${err.message}</pre>`;
+    }
   };
   return {
     taskId,

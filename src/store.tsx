@@ -46,7 +46,6 @@ const saveState = (state: State): void => {
   }
 };
 
-// @ts-ignore
 const sliceReducer = combineReducers(rootReducer);
 
 const reducer = (state: any = defaultState, action: Action): any => {

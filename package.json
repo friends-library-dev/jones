@@ -22,11 +22,11 @@
   "dependencies": {
     "@emotion/core": "^10.0.14",
     "@emotion/styled": "^10.0.14",
-    "@friends-library/adoc-convert": "^1.2.0",
-    "@friends-library/adoc-lint": "^1.1.0",
-    "@friends-library/doc-css": "^1.2.0",
-    "@friends-library/doc-html": "^1.1.1",
-    "@friends-library/types": "^3.0.0",
+    "@friends-library/adoc-lint": "^1.9.1",
+    "@friends-library/doc-css": "^2.0.1",
+    "@friends-library/evaluator": "^1.1.1",
+    "@friends-library/parser": "^1.1.0",
+    "@friends-library/types": "^4.0.0",
     "@octokit/rest": "^16.8.1",
     "brace": "^0.11.1",
     "classnames": "^2.2.6",
@@ -52,11 +52,12 @@
     "@babel/core": "7.3.3",
     "@babel/plugin-transform-react-jsx": "^7.3.0",
     "@babel/preset-typescript": "^7.3.3",
-    "@friends-library/dev": "^4.1.14",
+    "@friends-library/dev": "^4.1.18",
     "@types/classnames": "^2.2.7",
     "@types/escape-string-regexp": "^1.0.0",
     "@types/js-base64": "^2.3.1",
     "@types/js-yaml": "^3.12.0",
+    "@types/lodash": "^4.14.168",
     "@types/node": "^11.11.3",
     "@types/react": "16.9.11",
     "@types/react-dom": "^16.8.2",
@@ -65,7 +66,7 @@
     "babel-plugin-emotion": "^10.0.7",
     "babel-plugin-jsx-pragmatic": "^1.0.2",
     "babel-plugin-transform-inline-environment-variables": "^0.4.3",
-    "parcel": "^1.12.4"
+    "parcel": "1.12.3"
   },
   "browserslist": [
     "last 1 Chrome version"

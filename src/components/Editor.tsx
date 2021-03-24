@@ -5,6 +5,7 @@ import { withSize } from 'react-sizeme';
 import debounce from 'lodash/debounce';
 import { lint } from '@friends-library/adoc-lint';
 import { Asciidoc, LintResult, LintOptions } from '@friends-library/types';
+import { Parser, ParserError } from '@friends-library/parser';
 import { Dispatch, State } from '../type';
 import { requireCurrentTask } from '../select';
 import * as actions from '../actions';
@@ -69,7 +70,7 @@ class Editor extends React.Component<Props> {
     editor.focus();
     editor.gotoLine(0);
     editor.setPrintMarginColumn(90);
-    this.checkLint(editor.getValue());
+    this.checkErrors(editor.getValue());
   }
 
   public componentDidUpdate(prev: Props): void {
@@ -84,7 +85,7 @@ class Editor extends React.Component<Props> {
     }
   }
 
-  protected checkLint(adoc: unknown): void {
+  protected checkErrors(adoc: unknown): void {
     if (typeof adoc !== `string`) {
       return;
     }
@@ -95,6 +96,27 @@ class Editor extends React.Component<Props> {
           l.fixable !== true || [`join-words`, `obsolete-spellings`].includes(l.rule),
       )
       .filter((l) => l.rule !== `temporary-comments`);
+
+    try {
+      Parser.parseDocument({ adoc });
+    } catch (err) {
+      if (err instanceof ParserError) {
+        // don't show parser error if we already have a lint on the line
+        if (lints.every((lint) => lint.line !== err.lineNumber)) {
+          lints.push({
+            type: `error`,
+            line: err.lineNumber,
+            rule: `parser-error`,
+            message: `PARSER ERROR: ${err.message}`,
+            info: err.codeFrame
+              .split(`\n`)
+              .filter((l, i) => i > 2)
+              .join(`\n`),
+            column: err.column,
+          });
+        }
+      }
+    }
 
     this.annotateLintErrors(lints);
   }
@@ -138,7 +160,7 @@ class Editor extends React.Component<Props> {
         theme="tomorrow_night"
         onChange={debounce((adoc) => {
           updateFile(adoc);
-          this.checkLint(adoc);
+          this.checkErrors(adoc);
         }, 500)}
         value={adoc || ``}
         editorProps={{ $blockScrolling: true }}
@@ -167,7 +189,6 @@ const mapState = (state: State): Omit<StateProps, 'size'> => {
   const file = task.files[task.editingFile || ``];
   return {
     lintOptions: editorSubsetLintOptions(file ? file.path : ``),
-    // @ts-ignore
     githubUser: state.github.token !== null ? state.github.user : ``,
     fontSize: state.prefs.editorFontSize,
     searching: state.search.searching,
