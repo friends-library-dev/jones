@@ -32,7 +32,6 @@ export function editorSubsetLintOptions(path: string): LintOptions {
     `obsolete-spellings`,
     `person-mismatch`,
     `scan-errors`,
-    `title-length`,
     `trailing-whitespace`,
     `unexpected-period`,
     `unhyphened-words`,
