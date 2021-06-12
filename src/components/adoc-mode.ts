@@ -211,8 +211,9 @@ ace.define(
   (acequire: any, exports: any) => {
     const oop = acequire(`ace/lib/oop`);
     const TextMode = acequire(`ace/mode/text`).Mode;
-    const AdocHighlightRules = acequire(`ace/mode/adoc_highlight_rules`)
-      .AdocHighlightRules;
+    const AdocHighlightRules = acequire(
+      `ace/mode/adoc_highlight_rules`,
+    ).AdocHighlightRules;
 
     const Mode = function (): void {
       // @ts-ignore

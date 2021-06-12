@@ -64,7 +64,7 @@ export type Props = StateProps & DispatchProps;
 class Editor extends React.Component<Props> {
   private aceRef = React.createRef<any>();
 
-  public componentDidMount(): void {
+  public override componentDidMount(): void {
     const editor = this.editor();
     addKeyCommands(editor, this.props);
     editor.focus();
@@ -73,7 +73,7 @@ class Editor extends React.Component<Props> {
     this.checkErrors(editor.getValue());
   }
 
-  public componentDidUpdate(prev: Props): void {
+  public override componentDidUpdate(prev: Props): void {
     const { size, searching } = this.props;
     if (size.width !== prev.size.width || searching !== prev.searching) {
       this.editor().resize();
@@ -174,7 +174,7 @@ class Editor extends React.Component<Props> {
     );
   }
 
-  public render(): JSX.Element {
+  public override render(): JSX.Element {
     const { adoc, searching } = this.props;
     return (
       <StyledEditor searching={searching} className="Editor">

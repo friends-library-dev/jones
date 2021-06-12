@@ -73,7 +73,7 @@ class Component extends React.Component<Props> {
     );
   }
 
-  public render(): JSX.Element {
+  public override render(): JSX.Element {
     const { filename, editionType, documentTitle } = this.props;
     let inner;
     if (filename) {

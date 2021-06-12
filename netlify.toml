@@ -3,4 +3,4 @@
   publish = "dist/"
 
 [build.environment]
-  NODE_VERSION = "12.13.1"
+  NODE_VERSION = "14.17.0"

@@ -95,7 +95,7 @@ class EditTask extends React.Component<Props, State> {
     };
   }
 
-  public componentDidMount(): void {
+  public override componentDidMount(): void {
     const { fetchFriendRepos, friends } = this.props;
     // re-fetch friend repos once per session to add new friends
     if (!friendsFetchedThisSession || friends.length === 0) {
@@ -127,7 +127,7 @@ class EditTask extends React.Component<Props, State> {
     goToTasks();
   };
 
-  public render(): JSX.Element {
+  public override render(): JSX.Element {
     const { name, repoId } = this.state;
     const { task, friends } = this.props;
     return (

@@ -45,7 +45,7 @@ interface Props {
 class Work extends React.Component<Props> {
   private statusInterval: any = -1;
 
-  public componentDidMount(): void {
+  public override componentDidMount(): void {
     const { task, checkout, syncTask } = this.props;
     if (!task.parentCommit) {
       checkout(task);
@@ -55,20 +55,14 @@ class Work extends React.Component<Props> {
     }
   }
 
-  public componentWillUnmount(): void {
+  public override componentWillUnmount(): void {
     clearInterval(this.statusInterval);
   }
 
-  public render(): JSX.Element {
+  public override render(): JSX.Element {
     const { task } = this.props;
-    const {
-      increaseFontSize,
-      decreaseFontSize,
-      toggleSidebarOpen,
-      undo,
-      redo,
-      find,
-    } = this.props;
+    const { increaseFontSize, decreaseFontSize, toggleSidebarOpen, undo, redo, find } =
+      this.props;
     const status = get(task, `pullRequest.status`, `open`);
     if (status !== `open`) {
       return <ClosedWarning status={status} />;

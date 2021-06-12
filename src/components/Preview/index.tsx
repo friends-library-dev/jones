@@ -85,9 +85,9 @@ interface State {
 }
 
 class Component extends React.Component<Props, State> {
-  public state: State = { html: `` };
+  public override state: State = { html: `` };
 
-  public componentDidMount(): void {
+  public override componentDidMount(): void {
     window.addEventListener(`scroll`, this.watchScroll);
 
     // prepping HTML for a big file can take 1-5 SECONDS
@@ -99,7 +99,7 @@ class Component extends React.Component<Props, State> {
     }, 100);
   }
 
-  public componentWillUnmount(): void {
+  public override componentWillUnmount(): void {
     window.removeEventListener(`scroll`, this.watchScroll);
   }
 
@@ -119,7 +119,7 @@ class Component extends React.Component<Props, State> {
     sessionStorage.setItem(this.scrollKey(), String(window.scrollY));
   }, 200);
 
-  public render(): JSX.Element {
+  public override render(): JSX.Element {
     const { html } = this.state;
     return (
       <Rendered className="body">

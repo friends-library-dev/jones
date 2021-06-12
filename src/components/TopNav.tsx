@@ -69,14 +69,14 @@ interface Props {
 }
 
 class Component extends React.Component<Props> {
-  public componentDidMount(): void {
+  public override componentDidMount(): void {
     const { token, requestGitHubUser } = this.props;
     gh.authenticate(token);
     // always re-request the github user so we pull in new avatars, etc
     requestGitHubUser();
   }
 
-  public render(): JSX.Element {
+  public override render(): JSX.Element {
     const { avatar, name, screen, user, throbbing, logout } = this.props;
     return (
       <TopNav throbbing={throbbing}>

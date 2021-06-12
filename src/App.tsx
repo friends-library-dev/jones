@@ -41,7 +41,7 @@ interface Props {
 }
 
 class App extends React.Component<Props> {
-  public componentDidMount(): void {
+  public override componentDidMount(): void {
     const { receiveAccessToken } = this.props;
     const query = new URLSearchParams(window.location.search);
     if (query.has(`access_token`)) {
@@ -66,7 +66,7 @@ class App extends React.Component<Props> {
     }
   }
 
-  public render(): JSX.Element {
+  public override render(): JSX.Element {
     const { loggedIn, hardReset } = this.props;
     if (!loggedIn) {
       return <Login />;

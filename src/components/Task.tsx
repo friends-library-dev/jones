@@ -106,11 +106,11 @@ interface State {
 }
 
 class Task extends React.Component<Props, State> {
-  public state = {
+  public override state = {
     submitting: false,
   };
 
-  public async componentDidMount(): Promise<void> {
+  public override async componentDidMount(): Promise<void> {
     const { task, syncStatus } = this.props;
     task.pullRequest && syncStatus(task);
   }
@@ -176,7 +176,7 @@ class Task extends React.Component<Props, State> {
     return pullRequest ? `Re-submit` : `Submit`;
   }
 
-  public render(): JSX.Element {
+  public override render(): JSX.Element {
     const { submitting } = this.state;
     const { task, repo, workOnTask, taskHasWork } = this.props;
     let status = `open`;

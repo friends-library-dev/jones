@@ -98,11 +98,11 @@ interface State {
 class Component extends React.Component<Props, State> {
   private searchInput = React.createRef<HTMLInputElement>();
 
-  public state = {
+  public override state = {
     replaceTerm: ``,
   };
 
-  public componentDidMount(): void {
+  public override componentDidMount(): void {
     if (this.searchInput.current) {
       this.searchInput.current.focus();
     }
@@ -144,7 +144,7 @@ class Component extends React.Component<Props, State> {
     }
   };
 
-  public render(): JSX.Element {
+  public override render(): JSX.Element {
     const { replaceTerm } = this.state;
     const {
       searchTerm,

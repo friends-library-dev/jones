@@ -69,9 +69,9 @@ interface State {
 }
 
 class Search extends React.Component<Props, State> {
-  public state = initialState();
+  public override state = initialState();
 
-  public componentDidUpdate(prev: Props): void {
+  public override componentDidUpdate(prev: Props): void {
     const { files, regexp, words, caseSensitive } = this.props;
     if (files.length !== prev.files.length) {
       this.setState(initialState());
@@ -143,7 +143,7 @@ class Search extends React.Component<Props, State> {
     });
   };
 
-  public render(): JSX.Element {
+  public override render(): JSX.Element {
     const { searchTerm, replaceTerm, results, searchComplete } = this.state;
     const { searching } = this.props;
     if (!searching) {

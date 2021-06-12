@@ -81,7 +81,7 @@ interface Props {
 }
 
 class Sidebar extends React.Component<Props> {
-  public render(): JSX.Element {
+  public override render(): JSX.Element {
     const { open, width, toggleOpen, updateWidth } = this.props;
     if (!open) {
       return (

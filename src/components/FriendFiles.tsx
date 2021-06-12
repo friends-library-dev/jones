@@ -228,7 +228,7 @@ class FriendFiles extends React.Component<Props> {
     );
   };
 
-  public render(): JSX.Element {
+  public override render(): JSX.Element {
     const { documents } = this.props;
     return <WrapUl>{documents.map(this.renderDoc)}</WrapUl>;
   }
