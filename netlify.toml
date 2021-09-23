@@ -4,3 +4,4 @@
 
 [build.environment]
   NODE_VERSION = "14.17.0"
+  NODE_OPTIONS = "--unhandled-rejections=strict"

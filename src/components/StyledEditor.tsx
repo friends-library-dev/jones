@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 
-const minusSearch = `calc(30vh - 50px)`;
+const minusSearch = `calc(55vh - 50px)`;
+const minusSearchLarge = `calc(30vh - 50px)`;
 
 export default styled.div<{ searching: boolean }>`
   position: relative;
@@ -8,6 +9,10 @@ export default styled.div<{ searching: boolean }>`
   background: #555;
   width: 100%;
   height: ${(p: any) => (p.searching ? minusSearch : `100%`)};
+
+  @media (min-height: 1024px) {
+    height: ${(p: any) => (p.searching ? minusSearchLarge : `100%`)};
+  }
 
   .ace_print-margin {
     background: rgba(255, 255, 255, 0.08) !important;

@@ -21,11 +21,16 @@ const SearchWrap = styled.div`
   flex-direction: column;
   background: #000;
   padding: 0.75em 0 0 1.5em;
-  height: 70vh;
+  height: 45vh;
   flex: 0 0 auto;
   color: white;
   position: relative;
   box-sizing: border-box;
+  z-index: 1;
+
+  @media (min-height: 1024px) {
+    height: 70vh;
+  }
 
   & .close {
     position: absolute;
