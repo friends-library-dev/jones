@@ -148,7 +148,7 @@ const mapState = (state: AppState, { taskId, file }: OwnProps): Props => {
       if (err instanceof ParserError) {
         return `<pre class="error parse-error">${err.codeFrame}</pre>`;
       }
-      return `<pre class="error">${err.message}</pre>`;
+      return `<pre class="error">${String(err)}</pre>`;
     }
   };
   return {

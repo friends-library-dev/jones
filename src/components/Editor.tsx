@@ -102,7 +102,7 @@ class Editor extends React.Component<Props> {
     } catch (err) {
       if (err instanceof ParserError) {
         // don't show parser error if we already have a lint on the line
-        if (lints.every((lint) => lint.line !== err.lineNumber)) {
+        if (lints.every((lint) => lint.line !== (err as ParserError).lineNumber)) {
           lints.push({
             type: `error`,
             line: err.lineNumber,
@@ -112,7 +112,7 @@ class Editor extends React.Component<Props> {
               .split(`\n`)
               .filter((l, i) => i > 2)
               .join(`\n`),
-            column: err.column,
+            column: err.columnStart,
           });
         }
       }
