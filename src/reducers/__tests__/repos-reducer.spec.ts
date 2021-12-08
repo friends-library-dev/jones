@@ -14,6 +14,11 @@ describe(`reposReducer()`, () => {
     [`john-roberts`, `👴 John Roberts (d. 1684) source documents`, `John Roberts`],
     [`elizabeth-ussher`, `👵 Elizabeth Ussher source documents`, `Elizabeth Ussher`],
     [`s-grubb`, `👵 Sarah R. Grubb (1756-1790) source documents`, `Sarah R. Grubb`],
+    [
+      `mary-peisley-neale`,
+      `👵 Mary (Peisley) Neale (1717-1757) source documents`,
+      `Mary (Peisley) Neale`,
+    ],
   ];
 
   test.each(cases)(`%s / %s produces name: %s`, (name, description, friendName) => {
