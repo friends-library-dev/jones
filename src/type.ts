@@ -1,16 +1,5 @@
 import { ActionCreator } from 'redux';
-
-import {
-  Slug,
-  Url,
-  Title,
-  Uuid,
-  Name,
-  Asciidoc,
-  EditionType,
-  Sha,
-  FilePath,
-} from '@friends-library/types';
+import { EditionType } from '@friends-library/types';
 
 export type Dispatch = ActionCreator<any>;
 
@@ -27,20 +16,20 @@ export type GitHub =
     }
   | {
       token: string;
-      name?: Name;
-      avatar: Url;
+      name?: string;
+      avatar: string;
       user: string;
     };
 
 export interface SearchResultContext {
   lineNumber: number;
-  content: Asciidoc;
+  content: string;
 }
 
 export interface SearchResult {
-  documentSlug: Slug;
+  documentSlug: string;
   editionType: string;
-  path: FilePath;
+  path: string;
   filename: string;
   dismissed?: true;
   start: {
@@ -55,14 +44,14 @@ export interface SearchResult {
 }
 
 export interface File {
-  sha: Sha;
-  path: FilePath;
-  content: Asciidoc;
-  editedContent: Asciidoc | null;
+  sha: string;
+  path: string;
+  content: string;
+  editedContent: string | null;
 }
 
 export interface Task {
-  id: Uuid;
+  id: string;
   name: string;
   created: DateString;
   updated: DateString;
@@ -75,16 +64,16 @@ export interface Task {
   collapsed: { [key: string]: boolean };
   sidebarOpen: boolean;
   sidebarWidth: number;
-  documentTitles: { [key: string]: Title };
+  documentTitles: { [key: string]: string };
   files: { [key: string]: File };
-  editingFile?: FilePath;
-  parentCommit?: Sha;
+  editingFile?: string;
+  parentCommit?: string;
 }
 
 export interface Repo {
   id: number;
-  slug: Slug;
-  friendName: Name;
+  slug: string;
+  friendName: string;
 }
 
 export interface Search {
@@ -92,7 +81,7 @@ export interface Search {
   regexp: boolean;
   words: boolean;
   caseSensitive: boolean;
-  documentSlug?: Slug;
+  documentSlug?: string;
   editionType?: EditionType;
   filename?: string;
 }
@@ -116,7 +105,7 @@ export interface BaseState {
   };
   github: GitHub;
   screen: string;
-  currentTask?: Uuid;
+  currentTask?: string;
   repos: Repo[];
   search: Search;
   network: string[];

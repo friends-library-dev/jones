@@ -1,6 +1,5 @@
 import * as React from 'react';
 import styled from '@emotion/styled';
-import { Html } from '@friends-library/types';
 import { SearchResult, SearchResultContext, Dispatch } from '../../type';
 
 const SearchResultPreview = styled.div`
@@ -91,7 +90,7 @@ function lineContent(
   index: number,
   result: SearchResult,
   replace: string,
-): Html {
+): string {
   const { start, end } = result;
   let content = ``;
   const isStartLine = line.lineNumber === start.line;

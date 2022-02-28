@@ -4,7 +4,7 @@ import AceEditor from 'react-ace';
 import { withSize } from 'react-sizeme';
 import debounce from 'lodash/debounce';
 import { lint } from '@friends-library/adoc-lint';
-import { Asciidoc, LintResult, LintOptions } from '@friends-library/types';
+import { LintResult, LintOptions } from '@friends-library/adoc-lint';
 import { Parser, ParserError } from '@friends-library/parser';
 import { Dispatch, State } from '../type';
 import { requireCurrentTask } from '../select';
@@ -42,7 +42,7 @@ const ChooseAFile: React.FC = () => (
 
 interface StateProps {
   fontSize: number;
-  adoc?: Asciidoc;
+  adoc?: string;
   githubUser: string;
   size: { width: number; height: number };
   searching: boolean;

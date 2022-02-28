@@ -1,5 +1,5 @@
 import { State, Task, File } from './type';
-import { EditionType, FilePath } from '@friends-library/types';
+import { EditionType } from '@friends-library/types';
 
 export function currentTask(state: State): Task | null {
   if (!state.currentTask) {
@@ -55,13 +55,13 @@ export function searchedFiles(state: State): File[] {
 
 export interface DocumentFile {
   filename: string;
-  path: FilePath;
+  path: string;
   edited: boolean;
 }
 
 export interface DocumentEdition {
   type: EditionType;
-  path: FilePath;
+  path: string;
   files: DocumentFile[];
 }
 

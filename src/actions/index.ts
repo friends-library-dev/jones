@@ -1,5 +1,4 @@
 import { createAction } from 'redux-starter-kit';
-import { Asciidoc } from '@friends-library/types';
 import { Dispatch, State, ReduxThunk } from '../type';
 import { currentTask } from '../select';
 
@@ -62,7 +61,7 @@ export function updateSidebarWidth(width: number): ReduxThunk {
   };
 }
 
-export function updateEditingFile(adoc: Asciidoc): ReduxThunk {
+export function updateEditingFile(adoc: string): ReduxThunk {
   return (dispatch: Dispatch, getState: () => State) => {
     const task = currentTask(getState());
     if (!task) return;

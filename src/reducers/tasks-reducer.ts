@@ -1,6 +1,5 @@
 import { createReducer } from 'redux-starter-kit';
 import { Task, SearchResult, File, Tasks, Action } from '../type';
-import { Uuid } from '@friends-library/types';
 
 function fastForward(task: Task, commit: string): void {
   task.parentCommit = commit;
@@ -85,7 +84,7 @@ export default createReducer(
 
     REOPEN_TASK: (
       state: Tasks,
-      { payload: { id: oldId, newId } }: { payload: { id: Uuid; newId: Uuid } },
+      { payload: { id: oldId, newId } }: { payload: { id: string; newId: string } },
     ) => {
       const task = state[oldId];
       if (!task) {

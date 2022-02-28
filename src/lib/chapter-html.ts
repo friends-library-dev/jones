@@ -1,8 +1,8 @@
 import { evaluate } from '@friends-library/evaluator';
-import { Uuid, Html, genericDpc } from '@friends-library/types';
+import { genericDpc } from '@friends-library/types';
 import { State } from '../type';
 
-export default function chapterHtml(state: State, taskId: Uuid, path: string): Html {
+export default function chapterHtml(state: State, taskId: string, path: string): string {
   const task = state.tasks.present[taskId];
   if (!task) throw new Error(`Task ${taskId} not found`);
   const file = task.files[path];

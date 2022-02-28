@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import cx from 'classnames';
 import styled from '@emotion/styled';
-import { FilePath, Uuid } from '@friends-library/types';
 import { Dispatch, State as AppState } from '../type';
 import * as actions from '../actions';
 import {
@@ -135,9 +134,9 @@ const IconSearch = styled.i<{ isEdition?: boolean }>`
 `;
 
 interface Props {
-  taskId: Uuid;
+  taskId: string;
   collapsed: { [key: string]: boolean };
-  editingFile: FilePath;
+  editingFile: string;
   updateTask: Dispatch;
   collapseTask: Dispatch;
   updateSearch: Dispatch;

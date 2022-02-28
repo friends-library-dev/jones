@@ -1,6 +1,6 @@
 import { Octokit } from '@octokit/rest';
 import { Base64 } from 'js-base64';
-import { Slug, Sha, Lang } from '@friends-library/types';
+import { Lang } from '@friends-library/types';
 import { Task, File } from '../type';
 
 const isDev = process.env.NODE_ENV === `development`;
@@ -12,9 +12,9 @@ export const LANG: Lang = ORG === `biblioteca-de-los-amigos` ? `es` : `en`;
 type RepoSlug = string;
 type BranchName = string;
 
-interface GitFile {
+export interface GitFile {
   path: string;
-  sha: Sha;
+  sha: string;
   content: string;
 }
 
@@ -50,7 +50,7 @@ export async function getFriendRepos(): Promise<Record<string, any>[]> {
   return repos.filter((repo) => repo.name !== ORG);
 }
 
-export async function getRepoSlug(repoId: number): Promise<Slug> {
+export async function getRepoSlug(repoId: number): Promise<string> {
   const {
     data: { name: slug },
   } = await req(`/repositories/:id`, { id: repoId });
@@ -60,7 +60,7 @@ export async function getRepoSlug(repoId: number): Promise<Slug> {
 export async function getHeadSha(
   repo: RepoSlug,
   branch: BranchName = `master`,
-): Promise<Sha> {
+): Promise<string> {
   const response = await req(`/repos/:owner/:repo/git/refs/:ref`, {
     repo,
     ref: `heads/${branch}`,
@@ -73,7 +73,7 @@ export async function getHeadSha(
   return sha;
 }
 
-export async function getAdocFiles(repo: RepoSlug, sha: Sha): Promise<GitFile[]> {
+export async function getAdocFiles(repo: RepoSlug, sha: string): Promise<GitFile[]> {
   const tree = await getTree(repo, sha);
   const filePromises = tree.filter(isAsciidoc).map(async (blob) => {
     const {
@@ -94,10 +94,10 @@ export async function getAdocFiles(repo: RepoSlug, sha: Sha): Promise<GitFile[]>
 
 export async function getTree(
   repo: RepoSlug,
-  sha: Sha,
+  sha: string,
 ): Promise<
   {
-    sha: Sha;
+    sha: string;
     path: string;
     type: string;
   }[]
@@ -160,7 +160,7 @@ export async function ensureSyncedFork(repo: RepoSlug, user: string): Promise<vo
   await syncFork(repo, user);
 }
 
-export async function addCommit(task: Task /*, user: string */): Promise<Sha> {
+export async function addCommit(task: Task /*, user: string */): Promise<string> {
   const { parentCommit = ``, repoId, id, files } = task;
   const branchName = `task-${id}`;
   const repo = await getRepoSlug(repoId);
@@ -175,7 +175,7 @@ export async function addCommit(task: Task /*, user: string */): Promise<Sha> {
 export async function createNewPullRequest(
   task: Task,
   user: string,
-): Promise<{ number: number; commit: Sha }> {
+): Promise<{ number: number; commit: string }> {
   const { parentCommit = ``, repoId, id, files } = task;
   const branchName = `task-${id}`;
   const repo = await getRepoSlug(repoId);
@@ -230,7 +230,7 @@ function getPrBody(user: string): string {
 async function updateHead(
   repo: RepoSlug,
   branch: BranchName,
-  sha: Sha,
+  sha: string,
   owner: string = ORG,
 ): Promise<void> {
   await req(`PATCH /repos/:owner/:repo/git/refs/:ref`, {
@@ -243,11 +243,11 @@ async function updateHead(
 
 async function createCommit(
   repo: RepoSlug,
-  treeSha: Sha,
-  parent: Sha,
+  treeSha: string,
+  parent: string,
   message: string,
   owner: string = ORG,
-): Promise<Sha> {
+): Promise<string> {
   const {
     data: { sha },
   } = await req(`POST /repos/:owner/:repo/git/commits`, {
@@ -262,10 +262,10 @@ async function createCommit(
 
 async function createTree(
   repo: RepoSlug,
-  baseTreeSha: Sha,
+  baseTreeSha: string,
   files: { [key: string]: File },
   owner: string = ORG,
-): Promise<Sha> {
+): Promise<string> {
   const {
     data: { sha },
   } = await req(`POST /repos/:owner/:repo/git/trees`, {
@@ -297,9 +297,9 @@ function validContent(file: File): boolean {
 export async function createBranch(
   repo: RepoSlug,
   newBranchName: BranchName,
-  parentCommit: Sha,
+  parentCommit: string,
   owner: string = ORG,
-): Promise<{ branch: BranchName; sha: Sha }> {
+): Promise<{ branch: BranchName; sha: string }> {
   const res = (await gh.git.createRef({
     owner,
     repo,
@@ -314,9 +314,9 @@ export async function createBranch(
 
 export async function getTreeSha(
   repo: RepoSlug,
-  sha: Sha,
+  sha: string,
   owner: string = ORG,
-): Promise<Sha> {
+): Promise<string> {
   const res = await req(`/repos/:owner/:repo/git/commits/:sha`, {
     owner,
     repo,

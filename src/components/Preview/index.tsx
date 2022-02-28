@@ -3,7 +3,6 @@ import debounce from 'lodash/debounce';
 import { connect } from 'react-redux';
 import styled from '@emotion/styled';
 import { Global, css } from '@emotion/core';
-import { Uuid, Html } from '@friends-library/types';
 import { ParserError } from '@friends-library/evaluator';
 import { State as AppState } from '../../type';
 import chapterHtml from '../../lib/chapter-html';
@@ -72,16 +71,16 @@ const globalStyles = css`
 `;
 
 interface OwnProps {
-  taskId: Uuid;
+  taskId: string;
   file: string;
 }
 
 type Props = OwnProps & {
-  getHtml: () => Html;
+  getHtml: () => string;
 };
 
 interface State {
-  html: Html;
+  html: string;
 }
 
 class Component extends React.Component<Props, State> {
@@ -141,7 +140,7 @@ class Component extends React.Component<Props, State> {
 }
 
 const mapState = (state: AppState, { taskId, file }: OwnProps): Props => {
-  const getHtml = (): Html => {
+  const getHtml = (): string => {
     try {
       return chapterHtml(state, taskId, file);
     } catch (err) {

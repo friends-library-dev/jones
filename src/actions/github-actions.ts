@@ -1,12 +1,11 @@
 import smalltalk from 'smalltalk';
-import { safeLoad as ymlToJs } from 'js-yaml';
 import { lintFix as fixLints } from '@friends-library/adoc-lint';
-import { Slug, Url, Uuid } from '@friends-library/types';
 import * as gh from '../lib/github-api';
 import { Task, ReduxThunk, Dispatch, State } from '../type';
 import { lintOptions } from '../lib/lint';
+import { LANG } from '../lib/github-api';
 
-export function deleteTask(id: Uuid): ReduxThunk {
+export function deleteTask(id: string): ReduxThunk {
   return async (dispatch: Dispatch, getState: () => State) => {
     dispatch({
       type: `DELETE_TASK`,
@@ -141,7 +140,11 @@ export function resubmitTask(task: Task): ReduxThunk {
 export function checkout(task: Task): ReduxThunk {
   return async (dispatch: Dispatch) => {
     dispatch({ type: `START_CHECKOUT` });
-    const data = await tryGithub(
+    const data: {
+      documentTitles: Record<string, string>;
+      parentCommit: string;
+      files: Record<string, gh.GitFile>;
+    } = await tryGithub(
       async () => {
         const repoSlug = await gh.getRepoSlug(task.repoId);
         const parentCommit = await gh.getHeadSha(repoSlug, `master`);
@@ -149,14 +152,18 @@ export function checkout(task: Task): ReduxThunk {
         const files = fileArray.reduce((acc, file) => {
           acc[file.path] = file;
           return acc;
-        }, {} as any);
-        const yml = await fetch(friendYmlUrl(repoSlug)).then((r) => r.text());
-        const { documents } = ymlToJs(yml) as any;
-        const documentTitles = documents.reduce((acc: any, doc: any) => {
-          acc[doc.slug] = doc.title;
+        }, {} as Record<string, gh.GitFile>);
+        const docResponse = await window.fetch(`/.netlify/functions/get-documents`);
+        const allDocumentTitles: Record<string, string> = await docResponse.json();
+        const documentTitles = Object.entries(allDocumentTitles).reduce<
+          Record<string, string>
+        >((acc, [key, title]) => {
+          if (key.startsWith(`${LANG}/${repoSlug}`)) {
+            acc[key.replace(`${LANG}/${repoSlug}/`, ``)] = title;
+          }
           return acc;
-        }, {} as { [key: string]: string });
-        return Promise.resolve({ documentTitles, files, parentCommit });
+        }, {});
+        return { documentTitles, files, parentCommit };
       },
       `CHECKOUT`,
       dispatch,
@@ -177,27 +184,16 @@ export function checkout(task: Task): ReduxThunk {
   };
 }
 
-interface Named {
-  name: string;
-}
-
 export function fetchFriendRepos(): ReduxThunk {
   return async (dispatch: Dispatch) => {
     dispatch({ type: `REQUEST_FRIEND_REPOS` });
-    let repos;
     try {
-      const friendRepos = (await gh.getFriendRepos()) as Named[];
-      const ymlsPath = `/repos/friends-library-dev/:repo/contents/yml/${gh.LANG}`;
-      const { data: ymls } = await gh.req(ymlsPath, { repo: `friends` });
-      // filter out any friend repos that don't have a yml file yet
-      repos = friendRepos.filter((repo) => {
-        return !!ymls.find((y: Named) => y.name === `${repo.name}.yml`);
-      });
+      const friendRepos = await gh.getFriendRepos();
+      dispatch({ type: `RECEIVE_FRIEND_REPOS`, payload: friendRepos });
     } catch (e) {
       dispatch({ type: `NETWORK_ERROR` });
       return;
     }
-    dispatch({ type: `RECEIVE_FRIEND_REPOS`, payload: repos });
   };
 }
 
@@ -234,15 +230,6 @@ async function tryGithub(
 
 function alertGithubError(type: string): void {
   smalltalk.alert(`😬 <b style="color: red;">Network Error</b>`, ghErrorMsgs[type]);
-}
-
-function friendYmlUrl(friendSlug: Slug): Url {
-  return [
-    `https://raw.githubusercontent.com/`,
-    `friends-library-dev/friends/master/`,
-    `yml/${gh.LANG}/`,
-    `${friendSlug}.yml`,
-  ].join(``);
 }
 
 const ghErrorMsgs: { [key: string]: string } = {
